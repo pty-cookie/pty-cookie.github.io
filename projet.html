@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Portfolio | Projets</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #796293;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --accent-color: #e74c3c;
+            --font-main: 'Open Sans', sans-serif;
+            --font-heading: 'Montserrat', sans-serif;
+            --spacing-small: 10px;
+            --spacing-medium: 20px;
+            --spacing-large: 40px;
+            --spacing-xlarge: 60px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+        }
+
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            margin-bottom: var(--spacing-medium);
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-medium);
+        }
+
+        .section {
+            padding: var(--spacing-xlarge) 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: var(--spacing-medium) 0;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-large);
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        .nav-item.active a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero projects */
+        .projects-hero {
+            background: linear-gradient(135deg, var(--light-color) 0%, white 100%);
+            padding: 120px 0 var(--spacing-xlarge) 0;
+            text-align: center;
+        }
+
+        .projects-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-medium);
+        }
+
+        .projects-hero p {
+            max-width: 700px;
+            margin: 0 auto var(--spacing-large);
+            color: #7f8c8d;
+        }
+
+        /* Projects section */
+        .projects-section {
+            padding: var(--spacing-large) 0;
+        }
+
+        .projects-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-small);
+            margin-bottom: var(--spacing-large);
+        }
+
+        .filter-btn {
+            padding: var(--spacing-small) var(--spacing-medium);
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--spacing-large);
+        }
+
+        .project-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .project-tags {
+            position: absolute;
+            bottom: var(--spacing-small);
+            left: var(--spacing-small);
+            display: flex;
+            gap: var(--spacing-small);
+            z-index: 2;
+        }
+
+        .project-tag {
+            background-color: rgba(52, 152, 219, 0.9);
+            color: white;
+            padding: 4px var(--spacing-small);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .project-content {
+            padding: var(--spacing-medium);
+        }
+
+        .project-title {
+            color: var(--dark-color);
+            margin-bottom: var(--spacing-small);
+            font-size: 1.3rem;
+        }
+
+        .project-description {
+            color: #7f8c8d;
+            margin-bottom: var(--spacing-medium);
+        }
+
+        .project-links {
+            display: flex;
+            gap: var(--spacing-medium);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-small) var(--spacing-medium);
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Section title */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            font-size: 2rem;
+            margin-bottom: var(--spacing-xlarge);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: var(--spacing-xlarge) 0 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xlarge);
+            margin-bottom: var(--spacing-xlarge);
+        }
+
+        .footer h3 {
+            color: white;
+            margin-bottom: var(--spacing-medium);
+        }
+
+        .footer ul {
+            list-style: none;
+        }
+
+        .footer ul li {
+            margin-bottom: var(--spacing-small);
+        }
+
+        .footer ul li i {
+            margin-right: var(--spacing-small);
+            color: var(--primary-color);
+        }
+
+        .footer a {
+            color: white;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-medium);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--spacing-medium);
+        }
+
+        .social-links a {
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header .nav-list {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                padding: var(--spacing-large) 0;
+                box-shadow: var(--shadow-md);
+                transition: left 0.3s ease;
+                gap: var(--spacing-medium);
+            }
+
+            .header .nav-list.active {
+                left: 0;
+            }
+
+            .header .hamburger {
+                display: block;
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .projects-hero {
+                padding: 100px 0 var(--spacing-large) 0;
+            }
+
+            .projects-hero h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: var(--spacing-large) 0;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="./index.html" class="logo">MonPortfolio</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="./index.html">Accueil</a></li>
+                    <li class="nav-item active"><a href="./projet.html">Projets</a></li>
+                    <li class="nav-item"><a href="./contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="projects-hero">
+            <div class="container">
+                <h1>Mes Projets</h1>
+                <p>Découvrez une sélection de mes réalisations en développement web, design et autres projets techniques.</p>
+            </div>
+        </section>
+
+        <section class="projects-section section">
+            <div class="container">
+                <h2 class="section-title text-center">Mes réalisations</h2>
+                
+                <div class="projects-filter">
+                    <button class="filter-btn active" data-filter="all">Tous</button>
+                    <button class="filter-btn" data-filter="web">Web</button>
+                    <button class="filter-btn" data-filter="design">Design</button>
+                    <button class="filter-btn" data-filter="arduino">Arduino</button>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Projet 1 -->
+                    <article class="project-card" data-category="web">
+                        <div class="project-image">
+                            <img src="./site web.jpg" alt="Site web de vente de vélos">
+                            <div class="project-tags">
+                                <span class="project-tag">HTML/CSS</span>
+                                <span class="project-tag">JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Site e-commerce pour vélos</h3>
+                            <p class="project-description">Création d'un site web responsive pour la vente de vélos avec panier fonctionnel.</p>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-primary">Voir le projet</a>
+                                <a href="#" class="btn btn-secondary">Code source</a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- Projet 2 -->
+                    <article class="project-card" data-category="arduino">
+                        <div class="project-image">
+                            <img src="./Capture d'écran 2025-04-14 105600.png" alt="Ballon captif">
+                            <div class="project-tags">
+                                <span class="project-tag">Arduino</span>
+                                <span class="project-tag">SolidWorks</span>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Ballon captif</h3>
+                            <p class="project-description">Reproduction d'un ballon captif avec boîtier électronique contrôlé par Arduino.</p>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-primary">Voir le projet</a>
+                                <a href="#" class="btn btn-secondary">Documentation</a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    
+                    
+                    <!-- Projet 3 -->
+                    <article class="project-card" data-category="design">
+                        <div class="project-image">
+                            <img src="./Affiche_efrei_Rayane_et_Cherine.jpg" alt="Identité visuelle">
+                            <div class="project-tags">
+                                <span class="project-tag">Illustrator</span>
+                                <span class="project-tag">Photoshop</span>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Identité visuelle</h3>
+                            <p class="project-description">Création d'une identité visuelle pour une école.</p>
+                            <div class="project-links">
+                                <a href="#" class="btn btn-primary">Voir le projet</a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                   
+                    
+                    
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Mon Portfolio</h3>
+                    <p>Développeur web passionné créant des sites modernes et responsives.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="./index.html">Accueil</a></li>
+                        <li><a href="./projet.html">Projets</a></li>
+                        <li><a href="https://op.gg/summoners/euw/Pty%20cookie-0720">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> elabassi.cherine@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> 01 02 03 04 05</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Mon Portfolio. Tous droits réservés.</p>
+                <div class="social-links">
+                    <a href="https://github.com/pty-cookie"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/chérine-el-abassi-849a84332/"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/pty_.cookie/"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navList = document.querySelector('.nav-list');
+            
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navList.classList.toggle('active');
+            });
+            
+            // Fermer le menu quand on clique sur un lien
+            const navItems = document.querySelectorAll('.nav-item a');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navList.classList.remove('active');
+                });
+            });
+
+            // Filtrage des projets
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Retire la classe active de tous les boutons
+                    filterBtns.forEach(btn => btn.classList.remove('active'));
+                    // Ajoute la classe active au bouton cliqué
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    
+                    projectCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>
